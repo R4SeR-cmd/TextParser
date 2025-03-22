@@ -1,4 +1,6 @@
-﻿using TextParser.Handlers;
+﻿using System.Text.Json;
+using ChatGptConsoleApp.Services;
+using TextParser.Handlers;
 using TextParser.Interfaces;
 using TextParser.Models;
 using TextParser.Models.Enums;
@@ -21,7 +23,8 @@ internal class Program
         Console.WriteLine("----MENU----\n" +
                           "1 - Read sentence.\n" +
                           "2 - Read file.\n" +
-                          "3 - Read directory.");
+                          "3 - Read directory.\n" +
+                          "4 - Use chat gpt");
         Console.Write("Enter your choice: ");
         Enum.TryParse(Console.ReadLine(), out MenuChoice choice);
 
@@ -30,6 +33,7 @@ internal class Program
             MenuChoice.Sentence => new SentenceReader(),
             MenuChoice.File => new FileReader(),
             MenuChoice.Directory => new DirectoryReader(),
+            MenuChoice.ChatGPT => new ChatGPTReader(),
             _ => null
         };
 
@@ -82,6 +86,14 @@ internal class Program
                     TextCounter.CountCharacterFrequencies(text));
                 PrintResult(result);
             }
+                break;
+
+            case PatternType.ChatGPT:
+            {
+                var сhatGptService = new ChatGptService();
+                var result = await сhatGptService.GetChatGptResponse(text);
+                Console.WriteLine($"Chat GPT response\n{result}");
+            } 
                 break;
         }
     }

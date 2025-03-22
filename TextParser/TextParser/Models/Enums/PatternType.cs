@@ -5,5 +5,6 @@ public enum PatternType
     None,
     File,
     Directory,
-    Sentence
+    Sentence,
+    ChatGPT
 }
